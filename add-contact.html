@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Add to Contact Book</title>
+        <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a href="#" class="navbar-brand">Add Contact</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">                
+                   <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar">
+                    <div class="navbar-nav">
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="edit-contact.html" class="nav-item nav-link">Edit Contact</a>
+                    <a href="#" class="nav-item nav-link">Add Contact</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <br/>        
+        <h1>Add a contact below:</h1>
+        <h2>To add a contact, fill in the contact details and click submit.</h2>
+        <form id="editForm">
+            <label for="firstname">First name</label>
+            <input type="text" name="firstname" id="firstname"><br/>
+                <br/>
+            <label for="lastname">last name</label>
+            <input type="text" name="lastname" id="lastname"><br/>
+                <br/>
+            <label for="mobile">Mobile</label>
+            <input type="text" name="mobile" id="mobile"><br/>
+                <br/>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email"><br/>
+                <br/>
+            <label for="avatar">Avatar</label>
+            <input type="file" name="avatar" id="avatar"><br/>
+                <br/>
+            <button type="submit" id="submitForm">Submit</button>
+        </form>
+        <br/>
+        <button id="homeLink" type="button">Home</button>
+        
+        
+        <script src="config.js"></script>
+        <script>
+            document.getElementById("submitForm").addEventListener('click', submitForm);
+            document.getElementById("homeLink").addEventListener('click', homeLink);
+            function submitForm(e){
+                e.preventDefault();
+                
+                const form = new FormData(document.querySelector('#editForm'));
+                form.append('apiKey', apiKey);
+                
+                fetch(rootPath + 'controller/insert-contact/',{
+                    method: 'POST',
+                    headers: {'Accept': 'application/json, *.*'},
+                    body: form
+                })
+                .then(function(response){
+                    return response.text();                    
+                })
+                .then(function(data){
+                    if(data == "1"){
+                        alert("Contact added.");
+                        // Links user to home page  
+                        homeLink()
+                    }else{
+                        alert(data);
+                        // Links user to home page
+                        homeLink()
+                    }
+                })
+            }
+            
+            function homeLink(){
+                window.open("index.html","_self");
+            }
+            
+        </script>
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
